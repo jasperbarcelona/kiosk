@@ -1,0 +1,24 @@
+version: '3'
+services:
+  db:
+    restart: always
+    image: postgres:alpine
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: sgbsaints
+      POSTGRES_DB: kiosk
+    volumes:
+      - ./src/data:/var/lib/postgresql/data
+    network_mode: host
+
+  web:
+    restart: always
+    build: ./src
+    volumes:
+      - ./src:/usr/src/app/
+    ports:
+      - "7000:7000"
+    command: /usr/local/bin/gunicorn -w 2 -b :7000 kiosk:app
+    depends_on:
+      - db
+    network_mode: host
