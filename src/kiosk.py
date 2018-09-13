@@ -34,10 +34,10 @@ app.secret_key = '234234rfascasascqweqscasefsdvqwefe2323234dvsv'
 
 app.permanent_session_lifetime = datetime.timedelta(seconds=5)
 
-LOG_URL = 'http://127.0.0.1/addlog'
-SCHED_URL = 'http://127.0.0.1/sched/get'
-SYNC_URL = 'http://127.0.0.1/sync'
-REPORT_URL = 'http://127.0.0.1/report/status/new'
+LOG_URL = 'http://178.128.111.129/addlog'
+SCHED_URL = 'http://178.128.111.129/sched/get'
+SYNC_URL = 'http://178.128.111.129/sync'
+REPORT_URL = 'http://178.128.111.129/report/status/new'
 API_KEY = 'ecc67d28db284a2fb351d58fe18965f9'
 
 SCHOOL_ID = 'sgb-lc2017'
@@ -55,15 +55,17 @@ SHORT_CODE = '29290420420'
 class Student(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     id_no = db.Column(db.String(20))
+    student_id = db.Column(db.String(60))
     first_name = db.Column(db.String(30))
     last_name = db.Column(db.String(30))
     middle_name = db.Column(db.String(30))
     level = db.Column(db.String(30), default='None')
-    section = db.Column(db.String(30), default='None')
-    college_department = db.Column(db.String(30), default='None')
-    staff_department = db.Column(db.String(30), default='None')
+    section = db.Column(db.String(160), default='None')
+    college_department = db.Column(db.String(160), default='None')
+    staff_department = db.Column(db.String(160), default='None')
     group = db.Column(db.String(30))
     contact = db.Column(db.String(12))
+    image = db.Column(db.Text())
 
 class Log(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -152,6 +154,8 @@ def sync_to_cloud(log_id,student,name,date,time,timestamp):
 
 
 def fetch_records():
+    Student.query.delete()
+    db.session.commit()
     print 'Fetching data from %s...' %SYNC_URL
     params = {'school_no': SCHOOL_ID}
 
@@ -171,72 +175,164 @@ def save_records(resp):
     print 'Saving records to database...'
     try:
         for i in resp['k12']:
-            if i.get('middle_name'):
-                user = Student(
-                    id_no=i['id_no'],
-                    first_name=i['first_name'],
-                    last_name=i['last_name'],
-                    middle_name=i['middle_name'],
-                    level=i['level'],
-                    group=i['group'],
-                    section=i['section'],
-                    contact=i['parent_contact']
-                    )
-            else:
-                user = Student(
-                    id_no=i['id_no'],
-                    first_name=i['first_name'],
-                    last_name=i['last_name'],
-                    level=i['level'],
-                    group=i['group'],
-                    section=i['section'],
-                    contact=i['parent_contact']
-                    )
-            db.session.add(user)
+            if i.get('id_no'):
+                if i.get('student_id'):
+                    if i.get('middle_name') and i.get('middle_name') != '_':
+                        user = Student(
+                            id_no=i['id_no'],
+                            student_id=i['student_id'],
+                            first_name=i['first_name'],
+                            last_name=i['last_name'],
+                            middle_name=i['middle_name'],
+                            level=i['level'],
+                            group=i['group'],
+                            section=i['section'],
+                            contact=i['parent_contact'],
+                            image='../static/images/students/%s..png' % '%s, %s %s' % (i['last_name'], i['first_name'], i['middle_name'][0])
+                            )
+                    else:
+                        user = Student(
+                            id_no=i['id_no'],
+                            student_id=i['student_id'],
+                            first_name=i['first_name'],
+                            last_name=i['last_name'],
+                            level=i['level'],
+                            group=i['group'],
+                            section=i['section'],
+                            contact=i['parent_contact'],
+                            image='../static/images/students/%s.png' % '%s, %s' % (i['last_name'], i['first_name'])
+                            )
+                else:
+                    if i.get('middle_name') and i.get('middle_name') != '_':
+                        user = Student(
+                            id_no=i['id_no'],
+                            student_id='--',
+                            first_name=i['first_name'],
+                            last_name=i['last_name'],
+                            middle_name=i['middle_name'],
+                            level=i['level'],
+                            group=i['group'],
+                            section=i['section'],
+                            contact=i['parent_contact'],
+                            image='../static/images/students/%s..png' % '%s, %s %s' % (i['last_name'], i['first_name'], i['middle_name'][0])
+                            )
+                    else:
+                        user = Student(
+                            id_no=i['id_no'],
+                            student_id='--',
+                            first_name=i['first_name'],
+                            last_name=i['last_name'],
+                            level=i['level'],
+                            group=i['group'],
+                            section=i['section'],
+                            contact=i['parent_contact'],
+                            image='../static/images/students/%s.png' % '%s, %s' % (i['last_name'], i['first_name'])
+                            )
+                db.session.add(user)
 
         for i in resp['college']:
-            if i.get('middle_name'):
-                user = Student(
-                    id_no=i['id_no'],
-                    first_name=i['first_name'],
-                    last_name=i['last_name'],
-                    middle_name=i['middle_name'],
-                    group=i['group'],
-                    college_department=i['department'],
-                    contact=i['mobile']
-                    )
-            else:
-                user = Student(
-                    id_no=i['id_no'],
-                    first_name=i['first_name'],
-                    last_name=i['last_name'],
-                    group=i['group'],
-                    college_department=i['department'],
-                    contact=i['mobile']
-                        )
+            if i.get('id_no'):
+                if i.get('student_id'):
+                    if i.get('middle_name') and i.get('middle_name') != '_':
+                        user = Student(
+                            id_no=i['id_no'],
+                            student_id=i['student_id'],
+                            first_name=i['first_name'],
+                            last_name=i['last_name'],
+                            middle_name=i['middle_name'],
+                            group=i['group'],
+                            college_department=i['department'],
+                            contact=i['mobile'],
+                            image='../static/images/students/%s..png' % '%s, %s %s' % (i['last_name'], i['first_name'], i['middle_name'][0])
+                            )
+                    else:
+                        user = Student(
+                            id_no=i['id_no'],
+                            student_id=i['student_id'],
+                            first_name=i['first_name'],
+                            last_name=i['last_name'],
+                            group=i['group'],
+                            college_department=i['department'],
+                            contact=i['mobile'],
+                            image='../static/images/students/%s.png' % '%s, %s' % (i['last_name'], i['first_name'])
+                                )
+                else:
+                    if i.get('middle_name') and i.get('middle_name') != '_':
+                        user = Student(
+                            id_no=i['id_no'],
+                            student_id='--',
+                            first_name=i['first_name'],
+                            last_name=i['last_name'],
+                            middle_name=i['middle_name'],
+                            group=i['group'],
+                            college_department=i['department'],
+                            contact=i['mobile'],
+                            image='../static/images/students/%s..png' % '%s, %s %s' % (i['last_name'], i['first_name'], i['middle_name'][0])
+                            )
+                    else:
+                        user = Student(
+                            id_no=i['id_no'],
+                            student_id='--',
+                            first_name=i['first_name'],
+                            last_name=i['last_name'],
+                            group=i['group'],
+                            college_department=i['department'],
+                            contact=i['mobile'],
+                            image='../static/images/students/%s.png' % '%s, %s' % (i['last_name'], i['first_name'])
+                                )
+                db.session.add(user)
 
         for i in resp['staff']:
-            if i.get('middle_name'):
-                user = Student(
-                    id_no=i['id_no'],
-                    first_name=i['first_name'],
-                    last_name=i['last_name'],
-                    middle_name=i['middle_name'],
-                    group=i['group'],
-                    staff_department=i['department'],
-                    contact=i['mobile']
-                    )
-            else:
-                user = Student(
-                    id_no=i['id_no'],
-                    first_name=i['first_name'],
-                    last_name=i['last_name'],
-                    group=i['group'],
-                    staff_department=i['department'],
-                    contact=i['mobile']
-                        )
-
-            db.session.add(user)
+            if i.get('id_no'):
+                if i.get('staff_id'):
+                    if i.get('middle_name') and i.get('middle_name') != '_':
+                        user = Student(
+                            id_no=i['id_no'],
+                            student_id=i['staff_id'],
+                            first_name=i['first_name'],
+                            last_name=i['last_name'],
+                            middle_name=i['middle_name'],
+                            group=i['group'],
+                            staff_department=i['department'],
+                            contact=i['mobile'],
+                            image='../static/images/staff/%s..png' % '%s, %s %s' % (i['last_name'], i['first_name'], i['middle_name'][0])
+                            )
+                    else:
+                        user = Student(
+                            id_no=i['id_no'],
+                            student_id=i['staff_id'],
+                            first_name=i['first_name'],
+                            last_name=i['last_name'],
+                            group=i['group'],
+                            staff_department=i['department'],
+                            contact=i['mobile'],
+                            image='../static/images/staff/%s.png' % '%s, %s' % (i['last_name'], i['first_name'])
+                                )
+                else:
+                    if i.get('middle_name') and i.get('middle_name') != '_':
+                        user = Student(
+                            id_no=i['id_no'],
+                            student_id='--',
+                            first_name=i['first_name'],
+                            last_name=i['last_name'],
+                            middle_name=i['middle_name'],
+                            group=i['group'],
+                            staff_department=i['department'],
+                            contact=i['mobile'],
+                            image='../static/images/staff/%s..png' % '%s, %s %s' % (i['last_name'], i['first_name'], i['middle_name'][0])
+                            )
+                    else:
+                        user = Student(
+                            id_no=i['id_no'],
+                            student_id='--',
+                            first_name=i['first_name'],
+                            last_name=i['last_name'],
+                            group=i['group'],
+                            staff_department=i['department'],
+                            contact=i['mobile'],
+                            image='../static/images/staff/%s.png' % '%s, %s' % (i['last_name'], i['first_name'])
+                                )
+                db.session.add(user)
 
         db.session.commit()
         return('Success',201)
@@ -366,6 +462,7 @@ def sync_retry():
 def index_route():
     session['action'] = 'login'
     session['current_id'] = ''
+    fetch_records()
     return flask.render_template(
         'index.html',
         action=session['action'],
@@ -400,8 +497,6 @@ def change_action():
 
 @app.route('/sync', methods=['GET', 'POST'])
 def sync_database():
-    db.drop_all()
-    db.create_all()
     return fetch_records()
 
 
@@ -464,27 +559,30 @@ def webhooks_globe():
             return flask.render_template(
                 'info.html',
                 group=student.group,
-                id_no=student.id_no,
+                id_no=student.student_id,
                 level=str(student.level),
                 section=student.section,
-                student_name=student_name
+                student_name=student_name,
+                image=student.image
                 )
         elif student.group == 'college':
             return flask.render_template(
                 'info.html',
                 group=student.group,
-                id_no=student.id_no,
+                id_no=student.student_id,
                 level=str(student.level),
                 college_department=student.college_department,
-                student_name=student_name
+                student_name=student_name,
+                image=student.image
                 )
         elif student.group == 'staff':
             return flask.render_template(
                 'info.html',
                 group=student.group,
-                id_no=student.id_no,
+                id_no=student.student_id,
                 staff_department=student.staff_department,
-                student_name=student_name
+                student_name=student_name,
+                image=student.image
                 )
 
     return flask.render_template('error.html')

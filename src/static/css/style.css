@@ -86,9 +86,8 @@ html, body{
 
 .student-pic-display{
 	float: left;
-	height: 260px;
-	width: 260px;
-	margin-right: 20px;
+	height: 500px;
+	width: 350px;
 }
 
 .student-pic-display img{
