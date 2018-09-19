@@ -188,7 +188,7 @@ def save_records(resp):
                             group=i['group'],
                             section=i['section'],
                             contact=i['parent_contact'],
-                            image='../static/images/students/%s..png' % '%s, %s %s' % (i['last_name'], i['first_name'], i['middle_name'][0])
+                            image='../static/images/students/%s.png' % '%s, %s %s' % (i['last_name'], i['first_name'], i['middle_name'][0])
                             )
                     else:
                         user = Student(
@@ -214,7 +214,7 @@ def save_records(resp):
                             group=i['group'],
                             section=i['section'],
                             contact=i['parent_contact'],
-                            image='../static/images/students/%s..png' % '%s, %s %s' % (i['last_name'], i['first_name'], i['middle_name'][0])
+                            image='../static/images/students/%s.png' % '%s, %s %s' % (i['last_name'], i['first_name'], i['middle_name'][0])
                             )
                     else:
                         user = Student(
@@ -243,7 +243,7 @@ def save_records(resp):
                             group=i['group'],
                             college_department=i['department'],
                             contact=i['mobile'],
-                            image='../static/images/students/%s..png' % '%s, %s %s' % (i['last_name'], i['first_name'], i['middle_name'][0])
+                            image='../static/images/students/%s.png' % '%s, %s %s' % (i['last_name'], i['first_name'], i['middle_name'][0])
                             )
                     else:
                         user = Student(
@@ -267,7 +267,7 @@ def save_records(resp):
                             group=i['group'],
                             college_department=i['department'],
                             contact=i['mobile'],
-                            image='../static/images/students/%s..png' % '%s, %s %s' % (i['last_name'], i['first_name'], i['middle_name'][0])
+                            image='../static/images/students/%s.png' % '%s, %s %s' % (i['last_name'], i['first_name'], i['middle_name'][0])
                             )
                     else:
                         user = Student(
@@ -295,7 +295,7 @@ def save_records(resp):
                             group=i['group'],
                             staff_department=i['department'],
                             contact=i['mobile'],
-                            image='../static/images/staff/%s..png' % '%s, %s %s' % (i['last_name'], i['first_name'], i['middle_name'][0])
+                            image='../static/images/staff/%s.png' % '%s, %s %s' % (i['last_name'], i['first_name'], i['middle_name'][0])
                             )
                     else:
                         user = Student(
@@ -319,7 +319,7 @@ def save_records(resp):
                             group=i['group'],
                             staff_department=i['department'],
                             contact=i['mobile'],
-                            image='../static/images/staff/%s..png' % '%s, %s %s' % (i['last_name'], i['first_name'], i['middle_name'][0])
+                            image='../static/images/staff/%s.png' % '%s, %s %s' % (i['last_name'], i['first_name'], i['middle_name'][0])
                             )
                     else:
                         user = Student(
