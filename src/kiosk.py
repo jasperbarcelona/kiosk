@@ -34,10 +34,10 @@ app.secret_key = '234234rfascasascqweqscasefsdvqwefe2323234dvsv'
 
 app.permanent_session_lifetime = datetime.timedelta(seconds=5)
 
-LOG_URL = 'http://178.128.111.129/addlog'
-SCHED_URL = 'http://178.128.111.129/sched/get'
-SYNC_URL = 'http://178.128.111.129/sync'
-REPORT_URL = 'http://178.128.111.129/report/status/new'
+LOG_URL = 'http://68.183.191.135/addlog'
+SCHED_URL = 'http://68.183.191.135/sched/get'
+SYNC_URL = 'http://68.183.191.135/sync'
+REPORT_URL = 'http://68.183.191.135/report/status/new'
 API_KEY = 'ecc67d28db284a2fb351d58fe18965f9'
 
 SCHOOL_ID = 'sgb-lc2017'
@@ -188,7 +188,7 @@ def save_records(resp):
                             group=i['group'],
                             section=i['section'],
                             contact=i['parent_contact'],
-                            image='../static/images/students/%s.png' % '%s, %s %s' % (i['last_name'], i['first_name'], i['middle_name'][0])
+                            image='../static/images/students/%s..png' % '%s, %s %s' % (i['last_name'], i['first_name'], i['middle_name'][0])
                             )
                     else:
                         user = Student(
@@ -214,7 +214,7 @@ def save_records(resp):
                             group=i['group'],
                             section=i['section'],
                             contact=i['parent_contact'],
-                            image='../static/images/students/%s.png' % '%s, %s %s' % (i['last_name'], i['first_name'], i['middle_name'][0])
+                            image='../static/images/students/%s..png' % '%s, %s %s' % (i['last_name'], i['first_name'], i['middle_name'][0])
                             )
                     else:
                         user = Student(
@@ -243,7 +243,7 @@ def save_records(resp):
                             group=i['group'],
                             college_department=i['department'],
                             contact=i['mobile'],
-                            image='../static/images/students/%s.png' % '%s, %s %s' % (i['last_name'], i['first_name'], i['middle_name'][0])
+                            image='../static/images/students/%s..png' % '%s, %s %s' % (i['last_name'], i['first_name'], i['middle_name'][0])
                             )
                     else:
                         user = Student(
@@ -267,7 +267,7 @@ def save_records(resp):
                             group=i['group'],
                             college_department=i['department'],
                             contact=i['mobile'],
-                            image='../static/images/students/%s.png' % '%s, %s %s' % (i['last_name'], i['first_name'], i['middle_name'][0])
+                            image='../static/images/students/%s..png' % '%s, %s %s' % (i['last_name'], i['first_name'], i['middle_name'][0])
                             )
                     else:
                         user = Student(
@@ -295,7 +295,7 @@ def save_records(resp):
                             group=i['group'],
                             staff_department=i['department'],
                             contact=i['mobile'],
-                            image='../static/images/staff/%s.png' % '%s, %s %s' % (i['last_name'], i['first_name'], i['middle_name'][0])
+                            image='../static/images/staff/%s..png' % '%s, %s %s' % (i['last_name'], i['first_name'], i['middle_name'][0])
                             )
                     else:
                         user = Student(
@@ -319,7 +319,7 @@ def save_records(resp):
                             group=i['group'],
                             staff_department=i['department'],
                             contact=i['mobile'],
-                            image='../static/images/staff/%s.png' % '%s, %s %s' % (i['last_name'], i['first_name'], i['middle_name'][0])
+                            image='../static/images/staff/%s..png' % '%s, %s %s' % (i['last_name'], i['first_name'], i['middle_name'][0])
                             )
                     else:
                         user = Student(
